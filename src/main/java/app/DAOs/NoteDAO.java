@@ -11,16 +11,19 @@ import java.sql.SQLException;
 public class NoteDAO {
     ObservableList<NoteModel> noteList = FXCollections.observableArrayList();
 
-    public void createNote(String title, String author, String content) {
+    public int createNote(String title, String author, String content) {
         String sql = "INSERT INTO note(title, author, content) VALUES (?,?,?)";
+        int id = 0;
 
         try {
-            DBConnection.executeUpdate(sql,title, content, author);
+            id = DBConnection.executeUpdate(sql,title, author, content);
         } catch (SQLException e) {
             System.out.println("Error creating a note: " + e);
         } finally {
             DBConnection.closeResources();
         }
+
+        return id;
     }
 
     public void editNote(int id, String title, String author, String content) {

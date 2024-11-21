@@ -14,21 +14,25 @@ public class NoteEditor {
     private TextArea content;
 
     NoteDAO noteDAO = new NoteDAO();
+    NoteModel note = new NoteModel("","","");
 
     public void startNewNote() {
+        note = new NoteModel("","","");
         title.setText(null);
         author.setText(null);
         content.setText(null);
     }
 
     public void saveNote() {
-        NoteModel note = new NoteModel(title.getText(),author.getText(),content.getText());
-        System.out.println(note);
-        noteDAO.createNote(note.getTitle(), note.getAuthor(), note.getContent());
+        note = new NoteModel(title.getText(), author.getText(), content.getText());
+        int id = noteDAO.createNote(note.getTitle(), /*note.getAuthor()*/"user", note.getContent());
+        note.setId(id);
     }
 
     public void deleteNote() {
-        int noteID = 0;
-        noteDAO.deleteNote(noteID);
+        if (note.getId() != null) {
+            noteDAO.deleteNote(note.getId());
+        }
+        startNewNote();
     }
 }
