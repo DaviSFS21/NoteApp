@@ -2,15 +2,11 @@ package app.DAOs;
 
 import app.helpers.DBConnection;
 import app.models.NoteModel;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class NoteDAO {
-    ObservableList<NoteModel> noteList = FXCollections.observableArrayList();
-
     public int createNote(String title, String author, String content) {
         String sql = "INSERT INTO note(title, author, content) VALUES (?,?,?)";
         int id = 0;
@@ -24,6 +20,18 @@ public class NoteDAO {
         }
 
         return id;
+    }
+
+    public void editNote(NoteModel note) {
+        String sql = "UPDATE note SET title = ?, author = ?, content = ? WHERE id = ?";
+
+        try {
+            DBConnection.executeUpdate(sql, note.getTitle(), note.getAuthor(), note.getContent(), note.getId());
+        } catch (SQLException e) {
+            System.out.println("Error editing a note: " + e);
+        } finally {
+            DBConnection.closeResources();
+        }
     }
 
     public NoteModel getNote(int id) {

@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.DAOs.NoteDAO;
 import app.helpers.DBConnection;
+import app.helpers.Utils;
 import app.models.NoteModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,9 +14,11 @@ import javafx.stage.Popup;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class NoteEditor {
+public class EditorController {
     @FXML
     private TextField searchText;
+    @FXML
+    private Label status;
     @FXML
     private TextField title;
     @FXML
@@ -34,6 +37,7 @@ public class NoteEditor {
         // Initialize components
         suggestionList = new ListView<>();
         popup = new Popup();
+        status.setText("Note");
 
         // Configure components
         suggestionList.setMaxHeight(200);
@@ -63,6 +67,13 @@ public class NoteEditor {
                 popup.hide();
             }
         });
+    }
+
+    public void setNote() {
+        status.setText(note.getTitle());
+        title.setText(note.getTitle());
+        author.setText(note.getAuthor());
+        content.setText(note.getContent());
     }
 
     public void searchNotes() {
@@ -106,44 +117,34 @@ public class NoteEditor {
     }
 
     public void startNewNote() {
-        note = new NoteModel("","","");
-        title.setText(null);
-        author.setText(null);
-        content.setText(null);
-    }
-
-    public void setNote() {
-        title.setText(note.getTitle());
-        author.setText(note.getAuthor());
-        content.setText(note.getContent());
+        Utils.setAlert("CONFIRMATION","Start new note", "This action will discard any unsaved changes...", () -> {
+            note = new NoteModel("","","");
+            status.setText("New note");
+            title.setText(null);
+            author.setText(null);
+            content.setText(null);
+        });
     }
 
     public void saveNote() {
         if (note.getId() == null) {
             note = new NoteModel(title.getText(), author.getText(), content.getText());
-            int id = noteDAO.createNote(note.getTitle(), /*note.getAuthor()*/"user", note.getContent());
+            int id = noteDAO.createNote(note.getTitle(), note.getAuthor(), note.getContent());
             note.setId(id);
+        } else {
+            System.out.println(note);
+            NoteModel editedNote = new NoteModel(note.getId(), title.getText(), author.getText(), content.getText());
+            noteDAO.editNote(editedNote);
         }
-    }
-
-    public void editNote(int id, String title, String author, String content) {
-        String sql = "UPDATE note " +
-                "SET title = ?,author = ?, content = ?" +
-                "WHERE (id = ?)";
-
-        try {
-            DBConnection.executeUpdate(sql,title, author, content, id);
-        } catch (SQLException e) {
-            System.out.println("Error creating a note: " + e);
-        } finally {
-            DBConnection.closeResources();
-        }
+        status.setText(note.getTitle());
     }
 
     public void deleteNote() {
-        if (note.getId() != null) {
-            noteDAO.deleteNote(note.getId());
-        }
-        startNewNote();
+        Utils.setAlert("CONFIRMATION","Delete note", "Are you sure you want to delete this note?", () -> {
+            if (note.getId() != null) {
+                noteDAO.deleteNote(note.getId());
+            }
+            startNewNote();
+        });
     }
 }
