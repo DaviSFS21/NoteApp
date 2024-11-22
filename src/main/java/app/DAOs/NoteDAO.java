@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class NoteDAO {
+    ObservableList<NoteModel> noteList = FXCollections.observableArrayList();
+
     public int createNote(String title, String author, String content) {
         String sql = "INSERT INTO note(title, author, content) VALUES (?,?,?)";
         int id = 0;
