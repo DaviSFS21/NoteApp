@@ -7,12 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class NoteDAO {
-    public int createNote(String title, String author, String content) {
+    public int createNote(NoteModel note) {
         String sql = "INSERT INTO note(title, author, content) VALUES (?,?,?)";
         int id = 0;
 
         try {
-            id = DBConnection.executeUpdate(sql,title, author, content);
+            id = DBConnection.executeUpdate(sql,note.getTitle(), note.getAuthor(), note.getContent());
         } catch (SQLException e) {
             System.out.println("Error creating a note: " + e);
         } finally {

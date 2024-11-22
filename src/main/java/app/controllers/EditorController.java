@@ -129,12 +129,11 @@ public class EditorController {
     public void saveNote() {
         if (note.getId() == null) {
             note = new NoteModel(title.getText(), author.getText(), content.getText());
-            int id = noteDAO.createNote(note.getTitle(), note.getAuthor(), note.getContent());
-            note.setId(id);
+            note.setId(noteDAO.createNote(note));
         } else {
             System.out.println(note);
-            NoteModel editedNote = new NoteModel(note.getId(), title.getText(), author.getText(), content.getText());
-            noteDAO.editNote(editedNote);
+            note = new NoteModel(note.getId(), title.getText(), author.getText(), content.getText());
+            noteDAO.editNote(note);
         }
         status.setText(note.getTitle());
     }
