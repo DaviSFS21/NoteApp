@@ -101,7 +101,7 @@ public class EditorController {
     }
 
     public ObservableList<String> getSuggestions(String search) {
-        String sql = "SELECT id,title FROM note WHERE title LIKE ?";
+        String sql = "SELECT title FROM note WHERE title LIKE ?";
 
         try (ResultSet rs = DBConnection.executeQuery(sql,'%' + search + '%')) {
             while (rs.next()) {

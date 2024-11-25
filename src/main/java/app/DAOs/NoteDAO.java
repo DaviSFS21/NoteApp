@@ -34,26 +34,6 @@ public class NoteDAO {
         }
     }
 
-    public NoteModel getNote(int id) {
-        String sql = "SELECT * FROM note WHERE id = ?";
-        NoteModel note = null;
-
-        try (ResultSet rs = DBConnection.executeQuery(sql,id)) {
-            while (rs.next()) {
-                String title = rs.getString("title");
-                String author = rs.getString("author");
-                String content = rs.getString("content");
-
-                note = new NoteModel(id, title, author, content);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error reading notes from database: " + e);
-        } finally {
-            DBConnection.closeResources();
-        }
-        return note;
-    }
-
     public NoteModel getNoteByName(String title) {
         String sql = "SELECT * FROM note WHERE title = ?";
         NoteModel note = null;

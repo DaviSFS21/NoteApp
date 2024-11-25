@@ -29,9 +29,7 @@ CREATE TABLE `note` (
                         `title` varchar(50) NOT NULL,
                         `author` varchar(45) DEFAULT NULL,
                         `content` mediumtext,
-                        PRIMARY KEY (`id`),
-                        KEY `author_idx` (`author`),
-                        CONSTRAINT `author` FOREIGN KEY (`author`) REFERENCES `user` (`username`)
+                        PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,36 +39,13 @@ CREATE TABLE `note` (
 
 LOCK TABLES `note` WRITE;
 /*!40000 ALTER TABLE `note` DISABLE KEYS */;
-INSERT INTO `note` VALUES (1,'sim','user','boa noite'),(3,'java','davi','Java é uma linguagem de programação de baixo nível e fortemente tipada'),(7,'aaaa','davi','aaaaaaa'),(8,'','user',''),(9,'aa','user','aaaasfervsfdg   fdfrgrgsr\n\n\nbom dia ddsdosdsadsadfa');
+INSERT INTO `note` VALUES (1,'sim','user','boa noite'),(3,'java','davi', 'Java é uma linguagem de programação de baixo nível e fortemente tipada'),(7,'aaaa','davi','aaaaaaa'),(8,'','user',''),(9,'aa','user','aaaasfervsfdg   fdfrgrgsr\n\n\nbom dia ddsdosdsadsadfa');
 /*!40000 ALTER TABLE `note` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
 --
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-                        `name` varchar(45) NOT NULL,
-                        `username` varchar(45) NOT NULL,
-                        `password` varchar(60) NOT NULL,
-                        PRIMARY KEY (`username`),
-                        UNIQUE KEY `name_UNIQUE` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('Davi','davi','1234'),('User','user','1234');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
