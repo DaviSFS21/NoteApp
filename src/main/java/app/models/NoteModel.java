@@ -7,6 +7,7 @@ public class NoteModel {
     String content;
 
     public NoteModel(String title, String author, String content) {
+        this.id = 0;
         this.title = title;
         this.author = author;
         this.content = content;
@@ -22,8 +23,10 @@ public class NoteModel {
     public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+
+    public int setId(int id) {
         this.id = id;
+        return id;
     }
 
     public String getTitle() {
@@ -37,10 +40,6 @@ public class NoteModel {
     public String getContent() {
         return content;
     }
-    public void setContent(String content) {
-        this.content = content;
-    }
-
 
     @Override
     public String toString() {

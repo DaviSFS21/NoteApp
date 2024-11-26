@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `note`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `note` (
                         `id` int NOT NULL AUTO_INCREMENT,
-                        `title` varchar(50) NOT NULL,
+                        `title` varchar(50) NOT NULL UNIQUE KEY,
                         `author` varchar(45) DEFAULT NULL,
                         `content` mediumtext,
                         PRIMARY KEY (`id`)

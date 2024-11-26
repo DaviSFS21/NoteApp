@@ -1,10 +1,12 @@
 package app.DAOs;
 
 import app.helpers.DBConnection;
+import app.helpers.Utils;
 import app.models.NoteModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 public class NoteDAO {
     public int createNote(NoteModel note) {
@@ -12,7 +14,9 @@ public class NoteDAO {
         int id = 0;
 
         try {
-            id = DBConnection.executeUpdate(sql,note.getTitle(), note.getAuthor(), note.getContent());
+            id = DBConnection.executeUpdate(sql, note.getTitle(), note.getAuthor(), note.getContent());
+        } catch (SQLIntegrityConstraintViolationException e) {
+            Utils.setAlert("ERROR", "Create note", "This note already exists...");
         } catch (SQLException e) {
             System.out.println("Error creating a note: " + e);
         } finally {
@@ -22,16 +26,22 @@ public class NoteDAO {
         return id;
     }
 
-    public void editNote(NoteModel note) {
+    public int editNote(NoteModel note) {
+        int rowsAffected = 0;
+
         String sql = "UPDATE note SET title = ?, author = ?, content = ? WHERE id = ?";
 
         try {
-            DBConnection.executeUpdate(sql, note.getTitle(), note.getAuthor(), note.getContent(), note.getId());
+            rowsAffected = DBConnection.executeUpdate(sql, note.getTitle(), note.getAuthor(), note.getContent(), note.getId());
+        } catch (SQLIntegrityConstraintViolationException e) {
+            Utils.setAlert("ERROR", "Create note", "This note already exists...");
         } catch (SQLException e) {
             System.out.println("Error editing a note: " + e);
         } finally {
             DBConnection.closeResources();
         }
+
+        return rowsAffected;
     }
 
     public NoteModel getNoteByName(String title) {

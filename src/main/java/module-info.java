@@ -4,6 +4,7 @@ module app.controllers {
 
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires jdk.jshell;
 
     opens app.controllers to javafx.fxml;
     exports app.controllers;

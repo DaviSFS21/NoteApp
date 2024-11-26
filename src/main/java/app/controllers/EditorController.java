@@ -13,6 +13,7 @@ import javafx.stage.Popup;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class EditorController {
     @FXML
@@ -116,26 +117,44 @@ public class EditorController {
         return suggestions;
     }
 
+    public boolean checkChanges() {
+        return !Objects.equals(title.getText(), note.getTitle()) ||
+                !Objects.equals(author.getText(), note.getAuthor()) ||
+                !Objects.equals(content.getText(), note.getContent());
+    }
+
     public void startNewNote() {
-        Utils.setAlert("CONFIRMATION","Start new note", "This action will discard any unsaved changes...", () -> {
+        Runnable newNote = () -> {
             note = new NoteModel("","","");
             status.setText("New note");
             title.setText(null);
             author.setText(null);
             content.setText(null);
-        });
+        };
+
+        if (checkChanges()) {
+            Utils.setAlert("CONFIRMATION","Start new note", "This action will discard any unsaved changes...", newNote);
+        } else {
+            newNote.run();
+        }
     }
 
     public void saveNote() {
-        if (note.getId() == null) {
+        boolean changed = false;
+
+        if (note.getId() == 0) {
             note = new NoteModel(title.getText(), author.getText(), content.getText());
-            note.setId(noteDAO.createNote(note));
+            if(note.setId(noteDAO.createNote(note)) != 0) {
+                changed = true;
+            }
         } else {
-            System.out.println(note);
             note = new NoteModel(note.getId(), title.getText(), author.getText(), content.getText());
-            noteDAO.editNote(note);
+            if (noteDAO.editNote(note) != 0) {
+                changed = true;
+            }
         }
-        status.setText(note.getTitle());
+
+        if (changed) { Utils.setAlert("CONFIRMATION", "NoteApp", "The note was saved!"); }
     }
 
     public void deleteNote() {

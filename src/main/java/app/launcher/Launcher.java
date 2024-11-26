@@ -11,7 +11,7 @@ public class Launcher extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("/note-editor.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("Note editor");
         stage.setResizable(false);
         stage.setScene(scene);
