@@ -24,9 +24,8 @@ public class NoteModel {
         return id;
     }
 
-    public int setId(int id) {
+    public void setId(int id) {
         this.id = id;
-        return id;
     }
 
     public String getTitle() {

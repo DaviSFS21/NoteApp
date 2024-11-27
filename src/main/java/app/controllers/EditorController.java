@@ -144,7 +144,8 @@ public class EditorController {
 
         if (note.getId() == 0) {
             note = new NoteModel(title.getText(), author.getText(), content.getText());
-            if(note.setId(noteDAO.createNote(note)) != 0) {
+            note.setId(noteDAO.createNote(note));
+            if(note.getId() != 0) {
                 changed = true;
             }
         } else {
