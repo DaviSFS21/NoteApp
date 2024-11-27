@@ -155,7 +155,10 @@ public class EditorController {
             }
         }
 
-        if (changed) { Utils.setAlert("CONFIRMATION", "NoteApp", "The note was saved!"); }
+        if (changed) {
+            Utils.setAlert("CONFIRMATION", "NoteApp", "The note was saved!");
+            setNote();
+        }
     }
 
     public void deleteNote() {
