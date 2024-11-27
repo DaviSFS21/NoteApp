@@ -71,10 +71,10 @@ public class EditorController {
     }
 
     public void setNote() {
-        status.setText(note.getTitle());
         title.setText(note.getTitle());
         author.setText(note.getAuthor());
         content.setText(note.getContent());
+        status.setText(note.getTitle());
     }
 
     public void searchNotes() {
