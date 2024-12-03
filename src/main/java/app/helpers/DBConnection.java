@@ -1,17 +1,19 @@
 package app.helpers;
 
 import java.sql.*;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class DBConnection {
+    static Dotenv dotenv = Dotenv.load();
     private static final String DEFAULT_SCHEMA = "noteapp";
-    private static final String USER = "root";
-    private static final String PASSWORD = "admin";
+    private static final String USER = dotenv.get("DB_USER");
+    private static final String PASSWORD = dotenv.get("DB_PASS");
 
     private static Connection connection = null;
 
     public static Connection getConnection(boolean useDefaultSchema) throws SQLException {
         if (connection == null || connection.isClosed()) {
-            String URL = "jdbc:mysql://127.0.0.1:3306/";
+            String URL = dotenv.get("DB_URL");
             if (useDefaultSchema) {
                 URL = URL + DEFAULT_SCHEMA;
             }
@@ -39,7 +41,7 @@ public class DBConnection {
     }
 
     public static int executeUpdate(String sql, Object... params) throws SQLException {
-        int rowsAffected = 0;
+        int rowsAffected;
         int generatedKey = 0;
 
         try {

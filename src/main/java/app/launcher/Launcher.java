@@ -13,7 +13,6 @@ public class Launcher extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("/note-editor.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("Note editor");
-        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
